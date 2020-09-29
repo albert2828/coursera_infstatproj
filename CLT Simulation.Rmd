@@ -1,0 +1,56 @@
+---
+title: "Simulation of CLT"
+author: "Alberto Macías"
+date: "null"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview 
+
+In this project, we simulate the Central Limit Theorem (CLT) simulating one thousand samples of forty exponential random values and then compare the results of this simulation with the theoretical resuslts of the CLT.
+
+## Simulations
+
+We initiate simulating forty exponential random values and we make a histogram o look at the distribution of this sample:
+
+```{r}
+set.seed(3487)
+ex <- rexp(40, .2)
+m <- round(mean(ex), digits = 3)
+sde <- round(sd(ex), digits = 3)
+v <- round(sde^2, digits = 3)
+hist(ex, main = "Sample of 40 exponential random values")
+abline(v=m, col="purple")
+abline(v=1/0.2, col="blue")
+legend("topright", pch = "-", col = c("purple", "blue"), legend = c("sample mean", "theoretical mean"))
+
+```
+
+From this plot we see that the distribution of the sample is far from been normal as we could expect. The theoretical mean is supposed to be 5 while the sample mean is approximately 4.016 and the theoretical standard deviation is also 5 and the sample standard deviation is 3.543. The theoretical variance of the an exponential random value is $5^2=25$ and the sample variance is around 12.553, showing that this sample is less variable that it is supposed to.
+
+## Sample Mean and the CLT
+
+We generate one thousand simulations of forty exponential random values in take 
+repeatedly the mean so we obtain the sample mean and we can compare it via the CLT with a normal distribution with mean 5 and variance 25/1000=0.25.
+
+```{r}
+mns <- NULL
+for (i in 1 : 1000) mns = c(mns, mean(rexp(40, .2)))
+hist(mns)
+abline(v=mean(mns), col = "purple")
+abline(v=5, col="blue")
+legend("topright", pch = "-", col = c("purple", "blue"), legend = c("sample mean", "theoretical mean"))
+```
+
+As we expect from the CLT, the distribution is quite close to normal (is looks much like a normal curve). The mean of the sample is approximately `r mean(mns)` which is very close to the theoretical mean (5) and the sample variance is `r var(mns)` when the theoretical variance is 0.25.
+
+## Conclusion
+
+As the Central Limit Theorem states, if we take a large enough sample of random values of a distribution, in this case exponential, and we take the mean sample, this approximates to a normal distribution and it gets closer and closer if we take our sample larger and larger.
+
