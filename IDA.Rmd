@@ -2,7 +2,9 @@
 title: "Inferential Data Analysis"
 author: "Alberto Macías"
 date: "9/29/2020"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE, cache=TRUE}
@@ -15,6 +17,11 @@ We realize and inferential data analysis on the ToothGrowth data set in order to
 
 ## Loading the data and performing the EDA
 
+```{r, results='hide', message=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
 
 ```{r}
 library(datasets)
@@ -22,22 +29,44 @@ data("ToothGrowth")
 str(ToothGrowth)
 ```
 
-According to R documentation, Toothgrowth data set contains data about the "length of odontoblast (which are cells responsible for tooth growth) in 60 guinea pigs". It is a data frame with 4 variables and 60 observations, one for each guinea pig. The variables are len, a numeric vector that contains the lengths of the cells in unspecified units; supp, a two level factor that indicates the supplement type of vitamin C: orange juice (OJ) or ascorbic acid (VC); and dose, a numeric vector that contains the dosage in which vitamin C was provided, in  3 dosages, 0.5, 1 and 2 milligrams per day (mg/day).
+According to R documentation, Toothgrowth data set contains data about the "length of odontoblast (which are cells responsible for tooth growth) in 60 guinea pigs". It is a data frame with 3 variables and 60 observations, one for each guinea pig. The variables are len, a numeric vector that contains the lengths of the cells in unspecified units; supp, a two level factor that indicates the supplement type of vitamin C: orange juice (OJ) or ascorbic acid (VC); and dose, a numeric vector that contains the dosage in which vitamin C was provided, in  3 dosages, 0.5, 1 and 2 milligrams per day (mg/day).
 
 We divide ToothGrowth data set into to data frames, vc and oj, divided by the supplement type. We compute mean, standard deviation and variance of the cell lengths
 
 ```{r}
 vc <- subset(ToothGrowth, supp=="VC")
 oj <- subset(ToothGrowth, supp=="OJ")
-mnvc <- mean(vc$len)
-sdvc <- sd(vc$len)
-varvc <- var(vc$len)
-mnoj <- mean(oj$len)
-sdoj <- sd(oj$len)
-varoj <- var(oj$len)
+mnvc <- mean(vc$len); varvc <- var(vc$len)
+mnoj <- mean(oj$len); varoj <- var(oj$len)
+mnvc; varvc;
+mnoj; varoj
+
 ```
+We note that the mean of length of cells in oj data is greater than mean of length in vc, which could indicate that the orange juice supplement of vitamin c affects more to cell length than ascorbic acid. Also that data in the oranjuice set is less variable.
 
 
 
 
 
+## Appendix
+
+
+
+```{r, fig.width=3, fig.height=2}
+
+ggplot(ToothGrowth, aes(x=supp, y=len, fill= supp))+
+            geom_boxplot()+
+            ggtitle("Length of Odontoblast by supplement")+
+            ylab("Length")
+            
+ggplot(vc, aes(x=dose, y=len, fill=dose, group = dose))+
+            geom_boxplot()+
+            ggtitle("Length of Odontoblast by dose of ascorbic acid.")+
+            ylab("Length")
+
+ggplot(oj, aes(x=dose, y=len, fill=dose, group = dose))+
+            geom_boxplot()+
+            ggtitle("Length of Odontoblast by dose of orange juice.")+
+            ylab("Length")
+
+```
