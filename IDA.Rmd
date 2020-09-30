@@ -1,0 +1,43 @@
+---
+title: "Inferential Data Analysis"
+author: "Alberto Macías"
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Synopsis
+
+We realize and inferential data analysis on the ToothGrowth data set in order to study how vitamin C provided via orange juice or via ascorbic acid affects in the tooth length in 60 guinea pigs.
+
+## Loading the data and performing the EDA
+
+
+```{r}
+library(datasets)
+data("ToothGrowth")
+str(ToothGrowth)
+```
+
+According to R documentation, Toothgrowth data set contains data about the "length of odontoblast (which are cells responsible for tooth growth) in 60 guinea pigs". It is a data frame with 4 variables and 60 observations, one for each guinea pig. The variables are len, a numeric vector that contains the lengths of the cells in unspecified units; supp, a two level factor that indicates the supplement type of vitamin C: orange juice (OJ) or ascorbic acid (VC); and dose, a numeric vector that contains the dosage in which vitamin C was provided, in  3 dosages, 0.5, 1 and 2 milligrams per day (mg/day).
+
+We divide ToothGrowth data set into to data frames, vc and oj, divided by the supplement type. We compute mean, standard deviation and variance of the cell lengths
+
+```{r}
+vc <- subset(ToothGrowth, supp=="VC")
+oj <- subset(ToothGrowth, supp=="OJ")
+mnvc <- mean(vc$len)
+sdvc <- sd(vc$len)
+varvc <- var(vc$len)
+mnoj <- mean(oj$len)
+sdoj <- sd(oj$len)
+varoj <- var(oj$len)
+```
+
+
+
+
+
